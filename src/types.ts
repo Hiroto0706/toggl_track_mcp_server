@@ -1,38 +1,37 @@
-export type IsoString = string;
+export type Timezone = "UTC" | "Asia/Tokyo";
 
-export type DayRange = {
-  /** Inclusive start in ISO8601 (UTC). */
-  start: IsoString;
-  /** Exclusive end in ISO8601 (UTC). */
-  end: IsoString;
-};
-
-export type FetchTimeEntriesParams = {
-  apiToken: string;
-  /** ISO8601 string for start (UTC). */
-  start: IsoString;
-  /** ISO8601 string for end (UTC). */
-  end: IsoString;
-};
-
-export type TogglTimeEntry = {
+export type V9TimeEntry = {
   id: number;
   description: string | null;
-  wid?: number; // workspace id
-  pid?: number | null; // project id
-  tid?: number | null; // task id
-  start: string; // ISO
-  stop: string | null; // ISO or null for running
+  project_id?: number | null;
+  task_id?: number | null;
+  workspace_id?: number;
+  start: string; // ISO8601
+  stop: string | null; // ISO8601 or null when running
   duration: number; // seconds (running negative per Toggl semantics)
   tags?: string[];
   billable?: boolean;
-  uid?: number; // user id
+  user_id?: number;
   at?: string; // updated at
   server_deleted_at?: string | null;
   [k: string]: unknown;
 };
 
-export type DatedEntries = {
-  date: string; // YYYY-MM-DD (JST)
-  entries: TogglTimeEntry[];
+export type FetchByDateInput = {
+  apiToken: string;
+  date: string; // YYYY-MM-DD
+  timezone?: Timezone; // default UTC
+  workspaceId?: number; // optional: if omitted, uses /me/time_entries
+};
+
+export type FetchByDateResult = {
+  meta: {
+    source: "v9";
+    date: string;
+    timezone: Timezone;
+    startUTC: string;
+    endUTC: string;
+    count: number;
+  };
+  entries: V9TimeEntry[];
 };
