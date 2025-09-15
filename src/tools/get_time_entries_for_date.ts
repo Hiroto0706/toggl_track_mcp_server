@@ -2,7 +2,7 @@ import type { z } from "zod";
 import type { ContentResult } from "fastmcp";
 import { getTimeEntriesForDateParams } from "../schemas/tools.js";
 import { loadEnv } from "../utils/config.js";
-import { fetchTimeEntriesForDateV9 } from "../api/toggl.js";
+import { fetchTimeEntriesForDateV9 } from "../toggl/get.js";
 
 export const getTimeEntriesForDateTool = {
 	name: "get_time_entries_for_date",
@@ -16,7 +16,7 @@ export const getTimeEntriesForDateTool = {
 	parameters: getTimeEntriesForDateParams as unknown as z.ZodTypeAny,
 	async execute(rawArgs: z.infer<typeof getTimeEntriesForDateParams>) {
 		const env = loadEnv();
-		const apiToken = (rawArgs.apiToken ?? env.TOGGL_API_TOKEN)?.trim();
+		const apiToken = env.TOGGL_API_TOKEN;
 		if (!apiToken) {
 			return {
 				content: [

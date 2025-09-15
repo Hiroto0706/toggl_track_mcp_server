@@ -11,12 +11,4 @@ export const getTimeEntriesForDateParams = z.object({
 		.enum(["UTC", "Asia/Tokyo"])
 		.optional()
 		.describe("Time zone for 'date'. Defaults to 'UTC'."),
-	apiToken: z
-		.string()
-		.optional()
-		.describe("Override TOGGL_API_TOKEN from env (useful for testing)."),
-});
-
-export const checkAuthParams = z.object({
-	apiToken: z.string().optional(),
 });

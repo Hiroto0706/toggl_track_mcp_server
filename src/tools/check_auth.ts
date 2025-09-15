@@ -1,8 +1,6 @@
-import type { z } from "zod";
 import type { ContentResult } from "fastmcp";
-import { checkAuthParams } from "../schemas/tools.js";
 import { loadEnv } from "../utils/config.js";
-import { fetchMe } from "../api/toggl.js";
+import { fetchMe } from "../toggl/get.js";
 
 export const checkAuthTool = {
 	name: "check_auth",
@@ -12,10 +10,9 @@ export const checkAuthTool = {
 		idempotentHint: true,
 		title: "Check Auth",
 	},
-	parameters: checkAuthParams as unknown as z.ZodTypeAny,
-	async execute(rawArgs: z.infer<typeof checkAuthParams>) {
+	async execute() {
 		const env = loadEnv();
-		const apiToken = (rawArgs?.apiToken ?? env.TOGGL_API_TOKEN)?.trim();
+		const apiToken = env.TOGGL_API_TOKEN;
 		if (!apiToken) {
 			return {
 				content: [{ type: "text", text: "Missing TOGGL_API_TOKEN." }],
