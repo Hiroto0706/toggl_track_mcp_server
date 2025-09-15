@@ -3,6 +3,16 @@
 build:
 	npm run build
 
+# Format
+.PHONY: format
+format:
+	npx @biomejs/biome format --write ./src
+
+# Lint
+.PHONY: lint
+lint:
+	npx @biomejs/biome lint --write ./src
+
 # MCP Inspector
 .PHONY: inspector
 inspector:
