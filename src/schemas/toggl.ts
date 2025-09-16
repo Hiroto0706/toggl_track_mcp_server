@@ -1,5 +1,11 @@
 import type { ISODateString, Timezone } from "../schemas/date.js";
 
+export type FetchByDateInput = {
+	apiToken: string;
+	date: ISODateString; // YYYY-MM-DD
+	timezone?: Timezone; // default UTC
+};
+
 export type V9TimeEntry = {
 	id: number;
 	description: string | null;
@@ -15,12 +21,6 @@ export type V9TimeEntry = {
 	at?: string; // updated at
 	server_deleted_at?: string | null;
 	[k: string]: unknown;
-};
-
-export type FetchByDateInput = {
-	apiToken: string;
-	date: ISODateString; // YYYY-MM-DD
-	timezone?: Timezone; // default UTC
 };
 
 export type FetchByDateResult = {
