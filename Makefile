@@ -18,13 +18,24 @@ build: ## Build TypeScript to dist
 .PHONY: format
 format: ## Format source with Biome
 	npx @biomejs/biome format --write ./src
+	npx @biomejs/biome format --write ./tests
 
 # Lint
 .PHONY: lint
 lint: ## Lint source with Biome (apply fixes)
 	npx @biomejs/biome lint --write ./src
+	npx @biomejs/biome lint --write ./tests
 
 # MCP Inspector
 .PHONY: inspector
 inspector: ## Launch MCP Inspector (stdio)
 	npx @modelcontextprotocol/inspector node /Users/hirotokadota/Documents/monta_projects/toggl-track-mcp-server/dist/index.js --transport stdio
+
+# Test
+.PHONY: test
+test: ## Run unit tests (vitest)
+	npm run test
+
+.PHONY: coverage
+coverage: ## Run tests with coverage report
+	npm run coverage

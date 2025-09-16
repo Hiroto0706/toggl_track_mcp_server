@@ -2,7 +2,8 @@ import type { z } from "zod";
 import type { ContentResult } from "fastmcp";
 import { getTimeEntriesForDateParams } from "../schemas/tools.js";
 import { loadEnv } from "../utils/config.js";
-import { fetchTimeEntriesForDateV9, fetchMe } from "../toggl/get.js";
+import { fetchTimeEntriesForDateV9 } from "../toggl/time-entries.js";
+import { fetchMe } from "../toggl/me.js";
 
 const DEFAULT_TIMEZONE = "UTC";
 

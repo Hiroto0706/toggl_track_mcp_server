@@ -1,8 +1,8 @@
 import type { z } from "zod";
 import type { ContentResult } from "fastmcp";
 import { loadEnv } from "../utils/config.js";
-import { fetchMe } from "../toggl/get.js";
 import { checkAuthParams } from "../schemas/tools.js";
+import { fetchMe } from "../toggl/me.js";
 
 export const checkAuthTool = {
 	name: "check_auth",
