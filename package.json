@@ -16,6 +16,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@js-temporal/polyfill": "^0.5.1",
 		"@modelcontextprotocol/sdk": "^1.18.0",
 		"dotenv": "^16.4.5",
 		"fastmcp": "^3.17.0",
