@@ -1,5 +1,6 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { describe, it, expect } from "vitest";
-import { dayRange } from "../../src/utils/date.js";
+import { dayRange, resolveDateInput } from "../../src/utils/date.js";
 
 describe("dayRange (Temporal)", () => {
 	it("computes UTC range for Asia/Tokyo", () => {
@@ -25,5 +26,49 @@ describe("dayRange (Temporal)", () => {
 	it("throws when timezone is invalid (unknown IANA id)", () => {
 		// Temporal will throw for an unknown IANA time zone name.
 		expect(() => dayRange("2025-09-14", "Not/AZone")).toThrow();
+	});
+});
+
+describe("resolveDateInput", () => {
+	it("returns ISO date as-is", () => {
+		expect(
+			resolveDateInput(
+				"2025-09-14",
+				"UTC",
+				Temporal.Instant.from("2026-03-25T00:00:00Z"),
+			),
+		).toBe("2025-09-14");
+	});
+
+	it("normalizes slash-separated dates", () => {
+		expect(
+			resolveDateInput(
+				"2025/09/14",
+				"UTC",
+				Temporal.Instant.from("2026-03-25T00:00:00Z"),
+			),
+		).toBe("2025-09-14");
+	});
+
+	it("resolves relative dates in the provided timezone", () => {
+		const now = Temporal.Instant.from("2026-03-25T00:30:00Z");
+		expect(resolveDateInput("今日", "Asia/Tokyo", now)).toBe("2026-03-25");
+		expect(resolveDateInput("昨日", "Asia/Tokyo", now)).toBe("2026-03-24");
+		expect(resolveDateInput("一昨日", "Asia/Tokyo", now)).toBe("2026-03-23");
+	});
+
+	it("uses today when date is omitted", () => {
+		const now = Temporal.Instant.from("2026-03-25T00:30:00Z");
+		expect(resolveDateInput(undefined, "Asia/Tokyo", now)).toBe("2026-03-25");
+	});
+
+	it("throws when format is unsupported", () => {
+		expect(() =>
+			resolveDateInput(
+				"2025/9/14",
+				"UTC",
+				Temporal.Instant.from("2026-03-25T00:00:00Z"),
+			),
+		).toThrow(/Invalid date format/);
 	});
 });

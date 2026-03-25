@@ -2,6 +2,7 @@ import type { z } from "zod";
 import type { ContentResult } from "fastmcp";
 import { getTimeEntriesForDateParams } from "../schemas/tools.js";
 import { loadEnv } from "../utils/config.js";
+import { resolveDateInput } from "../utils/date.js";
 import { fetchTimeEntriesForDateV9 } from "../toggl/time-entries.js";
 import { fetchMe } from "../toggl/me.js";
 
@@ -36,9 +37,10 @@ export const getTimeEntriesForDateTool = {
 			((await fetchMe(apiToken)) as { timezone?: string } | undefined)
 				?.timezone ||
 			DEFAULT_TIMEZONE;
+		const date = resolveDateInput(args.date, tz);
 		const result = await fetchTimeEntriesForDateV9({
 			apiToken,
-			date: args.date,
+			date,
 			timezone: tz,
 		});
 		return {

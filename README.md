@@ -94,7 +94,7 @@ npx @modelcontextprotocol/inspector
 - `get_time_entries_for_date`
   - Fetches v9 time entries for a single date.
   - Params (JSON):
-    - `date` (string, `YYYY-MM-DD`)
+    - `date` (string, optional; accepts `YYYY-MM-DD`, `YYYY/MM/DD`, `今日`, `昨日`, `一昨日`; omitted means today)
     - `timezone` (string, IANA; optional → uses account timezone; fallback `UTC`)
     - `apiToken` (string; optional override for env)
   - Returns (JSON):
